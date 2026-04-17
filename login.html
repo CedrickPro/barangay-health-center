@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Center - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.4)), 
+                        url("{{ url_for('static', filename='bg_login.jpg') }}") center/cover no-repeat fixed;
+            animation: fadeInBody 1s ease-out;
+        }
+
+        @keyframes fadeInBody {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUpCard {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes floatLogo {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 32px;
+            animation: slideUpCard 0.8s ease-out forwards;
+        }
+        .logo-box {
+            width: 48px;
+            height: 48px;
+            background: #3b82f6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+            animation: floatLogo 3s ease-in-out infinite;
+        }
+        .logo-box svg { width: 24px; height: 24px; fill: white; }
+        
+        .app-title { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+        .app-subtitle { font-size: 14px; color: #94a3b8; }
+        
+        .login-card {
+            background-color: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 16px;
+            padding: 32px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            animation: slideUpCard 0.8s ease-out 0.2s forwards;
+        }
+        
+        .card-header { margin-bottom: 24px; }
+        .card-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .card-subtitle { font-size: 14px; color: #94a3b8; }
+        
+        .role-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .role-tab {
+            flex: 1;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .role-tab:hover {
+            background: rgba(59, 130, 246, 0.05);
+            transform: translateY(-2px);
+        }
+        .role-tab.active {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: #3b82f6;
+            transform: translateY(0);
+        }
+        .role-tab-icon { font-size: 20px; margin-bottom: 4px; }
+        .role-tab-title { font-size: 14px; font-weight: 600; color: #f8fafc; }
+        .role-tab-sub { font-size: 12px; color: #64748b; }
+        
+        .form-group { margin-bottom: 16px; text-align: left; }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .input-wrapper { position: relative; }
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: #64748b;
+        }
+        
+        .form-control {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #f8fafc;
+            font-family: inherit;
+            padding: 12px 12px 12px 36px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 8px;
+        }
+        .btn-submit:hover { 
+            background: #2563eb; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        
+        .error-msg {
+            background: rgba(220, 38, 38, 0.1);
+            color: #f87171;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            text-align: center;
+        }
+
+        .footer-text {
+            margin-top: 32px;
+            font-size: 12px;
+            color: rgba(248, 250, 252, 0.5);
+            text-align: center;
+            animation: slideUpCard 0.8s ease-out 0.4s forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo-container">
+        <div class="logo-box">
+            <svg viewBox="0 0 16 16">
+                <!-- Simple clock icon -->
+                <path d="M8 15A7 7 0 108 1a7 7 0 000 14zm0-1A6 6 0 118 2a6 6 0 010 12z"/>
+                <path d="M7.5 4v4.5l3.5 2 .5-.8-3-1.7V4h-1z"/>
+            </svg>
+        </div>
+        <div class="app-title">Health Center</div>
+        <div class="app-subtitle">Disease Monitor &middot; Barangay Mabuhay</div>
+    </div>
+
+    <div class="login-card">
+        <div class="card-header">
+            <div class="card-title">Welcome back</div>
+            <div class="card-subtitle">Sign in to access the dashboard</div>
+        </div>
+
+        {% if error %}
+        <div class="error-msg">{{ error }}</div>
+        {% endif %}
+
+        <div class="role-tabs">
+            <div class="role-tab active" onclick="selectRole('admin')" id="tab-admin">
+                <div class="role-tab-icon">🛡️</div>
+                <div class="role-tab-title">Admin</div>
+                <div class="role-tab-sub">Full access</div>
+            </div>
+            <div class="role-tab" onclick="selectRole('staff')" id="tab-staff">
+                <div class="role-tab-icon">👩‍⚕️</div>
+                <div class="role-tab-title">Staff</div>
+                <div class="role-tab-sub">Limited access</div>
+            </div>
+        </div>
+
+        <form method="POST" action="/login">
+            <input type="hidden" name="role" id="roleInput" value="admin">
+            
+            <div class="form-group">
+                <label>Username</label>
+                <div class="input-wrapper">
+                    <svg class="input-icon" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                    </svg>
+                    <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <div class="input-wrapper">
+                    <svg class="input-icon" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                    </svg>
+                    <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-submit">Sign In</button>
+        </form>
+    </div>
+
+    <div class="footer-text">
+        Health Center Disease Monitor &middot; Barangay Mabuhay
+    </div>
+
+    <script>
+        function selectRole(role) {
+            document.getElementById('tab-admin').classList.remove('active');
+            document.getElementById('tab-staff').classList.remove('active');
+            
+            if (role === 'admin') {
+                document.getElementById('tab-admin').classList.add('active');
+            } else {
+                document.getElementById('tab-staff').classList.add('active');
+            }
+            
+            // Note: Currently, the backend relies purely on the correct username/password from `users.json`.
+            // But we keep this input in case you want to enforce role-matching explicitly.
+            document.getElementById('roleInput').value = role;
+        }
+    </script>
+</body>
+</html>

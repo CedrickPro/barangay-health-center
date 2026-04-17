@@ -1,0 +1,18 @@
+[
+  {
+    "id": 2,
+    "first_name": "Cedrick",
+    "last_name": "Tacan",
+    "age": "19",
+    "gender": "Male",
+    "disease": "Flu",
+    "purok": "Purok 4",
+    "severity": "High",
+    "symptoms": "High fever",
+    "phone": "09539430093",
+    "email": "cedricktaacan07@gmail.com",
+    "address": "28 IB / Purok 4 / Upper Calarian",
+    "status": "Under Treatment",
+    "date_reported": "2026-04-17"
+  }
+]
