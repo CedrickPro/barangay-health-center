@@ -9,7 +9,7 @@ from datetime import datetime
 from functools import wraps
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session
 
-app = Flask(__name__, template_folder='.', static_folder='.')
+app = Flask(__name__, template_folder='.', static_folder='.', static_url_path='')
 app.secret_key = "health_center_secret_2026"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
