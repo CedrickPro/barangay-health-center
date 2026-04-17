@@ -7,12 +7,17 @@ import json
 import os
 from datetime import datetime
 from functools import wraps
-from flask import Flask, render_template, jsonify, request, redirect, url_for, session
+from flask import Flask, render_template, jsonify, request, redirect, url_for, session, send_from_directory
 
 app = Flask(__name__, template_folder='.', static_folder='.', static_url_path='')
 app.secret_key = "health_center_secret_2026"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# ---- Universal File Finder (Fixes 'Not Found' for flat repos) ----
+@app.route('/<path:filename>')
+def serve_root_files(filename):
+    return send_from_directory('.', filename)
 
 # ---- Health Check ----
 @app.route("/health")
